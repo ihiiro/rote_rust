@@ -1,0 +1,12 @@
+update rust: rustup update
+uninstall rust: rustup self uninstall
+Compile a program: rustc someprogram.rs
+cargo version: cargo --version
+create new cargo: cargo new directoryname
+build cargo project: cargo build
+build and run cargo: cargo run
+check if code compiles(no executable is produced): cargo check
+build for release: cargo build --release
+update crates: cargo update
+curate and open documentation of used creates: cargo doc --open
+create a library: cargo new --lib somelibrary
