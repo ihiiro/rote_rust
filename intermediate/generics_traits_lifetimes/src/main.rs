@@ -40,6 +40,57 @@ impl Pair<&str, i32> {
     }
 }
 
+// defining a trait
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
+
+pub struct Article {
+    pub title: String,
+    pub author: String,
+    pub body: String,
+    pub id: i32,
+}
+
+// implementing the trait on Article struct
+impl Summary for Article {
+    fn summarize(&self) -> String {
+        format!("{} by {}: {}...", self.title, self.author, &self.body[..29])
+    }
+}
+
+// implementing Summary trait for a function's parameters
+// multiple traits can be added with +
+// example: fn summarize(item: &(impl Summary + Display)) -> String
+fn summarize(item: &impl Summary) -> String {
+    format!("Summary:\n|{}|", item.summarize())
+}
+// summarize can also be written with trait bound syntax
+// multiple traits can be added with + too
+// example: fn summarize2<T: Summary + Display>(item: &T) -> String
+fn _summarize2<T: Summary>(item: &T) -> String {
+    format!("Summary:\n|{}|", item.summarize())
+}
+// summarize3 uses the where clause to declutter the function's signature and make it readables
+// used when there are more than one generic type parameters
+fn _summarize3<T>(item: &T) -> String
+    // where generic type parameter: trait,
+             // ...: ..
+    where T: Summary,
+{
+    format!("Summary:\n|{}|", item.summarize())
+}
+
+// generic lifetime parameter: convention is lowercase and short after the ' inside <>
+// note: generic type parameters can be added inside the same <>, example: <'a, T>
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
 fn main() {
     println!();
     let list_of_chars = vec!['a', 'b', 'c', 'd', 'e', 'f', 'g'];
@@ -71,4 +122,30 @@ fn main() {
     println!();
     let integer_and_opposite = Pair { _x: 1, _y: -1 };
     println!("integer_and_opposite {:?}", integer_and_opposite.return_pair());
+
+    //
+    println!();
+    let new_article = Article {
+        title: String::from("The ways of the man"),
+        author: String::from("PewDiePie"),
+        body: String::from("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+        nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum."),
+        id: 1,
+    };
+
+    println!("article[ID]={}::{}", new_article.id, new_article.summarize());
+
+    //
+    println!();
+    println!("{}", summarize(&new_article));
+
+    // explicit lifetimes: generic lifetime parameters
+    println!();
+    let x = "sdjfdlsfjldfjdlfkjdf";
+    let y = "kdfjdkln";
+    println!("largest string is: {}", longest(&x, &y));
 }
