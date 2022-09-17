@@ -10,3 +10,16 @@ build for release: cargo build --release
 update crates: cargo update
 curate and open documentation of used creates: cargo doc --open
 create a library: cargo new --lib somelibrary
+test: cargo test
+pass arguments to cargo test: cargo test --something
+pass arguments to resulting test binary: cargo test -- --something
+determine number of threads the binary should use: cargo test -- --test-threads=n
+show println! even if test passes: cargo test -- --show-output
+run a particular test or a number of tests: cargo test function_name
+                           for multiple tests: function names must have something in common
+                           for example: fn hello_man() and fn hello_woman
+                           we can run those two by: cargo test hello or cargo test man or anything common
+                           + can also be filtered by module name(same logic)
+run only ignored tests: cargo test -- --ignored
+override #[ignore]: cargo test -- --include-ignored
+run all tests in an integration test file: cargo test --test filename

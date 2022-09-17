@@ -24,7 +24,12 @@ fn _show_name(_name: &str) -> String {
     format!("manwtf!")
 }
 
-#[cfg(test)]
+pub fn _silly_function(i: u8) -> i32 {
+    println!("Got the number {}", i);
+    49
+}
+
+#[cfg(test)] //tells rust to only compile this module if we use: cargo test
 mod tests {
     use super::*;
 
@@ -81,6 +86,22 @@ mod tests {
     #[should_panic(expected = "is larger than 1000")]
     fn too_large() {
         _add_five(400);
+    }
+
+    #[test]
+    fn this_test_will_pass() {
+        assert_eq!(49, _silly_function(39));
+    }
+
+    #[test]
+    fn this_test_will_fail() {
+        assert_eq!(39, _silly_function(49));
+    }
+
+    #[test]
+    #[ignore] //ignores test
+    fn this_test_will_be_ignored() {
+        assert_eq!(49, _silly_function(10))
     }
 
     #[test]
